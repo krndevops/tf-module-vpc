@@ -6,6 +6,4 @@ variable "web_subnets_cidr" {}
 variable "app_subnets_cidr" {}
 variable "db_subnets_cidr" {}
 variable "az" {}
-variable "manage_default_vpc_routes" {
-  default = false
-}
+
