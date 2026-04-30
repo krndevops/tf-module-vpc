@@ -80,6 +80,8 @@ resource "aws_nat_gateway" "main" {
   allocation_id = lookup(element(aws_eip.main, count.index), "id", null)
   subnet_id     = lookup(element(aws_subnet.public, count.index), "id", null)
 
+  depends_on = [aws_internet_gateway.main]
+
   tags = {
     Name = "ngw-${count.index+1}"
   }
@@ -204,16 +206,16 @@ resource "aws_route" "main" {
   route_table_id            = aws_vpc.main.main_route_table_id
   destination_cidr_block    = data.aws_vpc.default.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.main.id
+
+  depends_on = [aws_vpc_peering_connection.main]
 }
 
-
-
 resource "aws_route" "default-vpc" {
-
   route_table_id            = data.aws_vpc.default.main_route_table_id
   destination_cidr_block    = aws_vpc.main.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.main.id
-}
 
+  depends_on = [aws_vpc_peering_connection.main]
+}
 
 
